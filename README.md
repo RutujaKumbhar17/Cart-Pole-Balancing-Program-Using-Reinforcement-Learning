@@ -14,28 +14,33 @@ Understood. I have updated the **Table of Contents** using internal **Anchor Lin
 
 -----
 
-# 🤖 Cart Pole Balancing using Reinforcement Learning
-
-\<div align="center"\>
-
-*A production-quality Deep Reinforcement Learning project.*
-
-\</div\>
-
 
 ## 📑 Table of Contents
+## 📑 Table of Contents
 
-- [Project Overview](#project-overview)
-- [Features](#features)
-- [Project Structure](#project-structure)
+- [Overview](#overview)
+- [What is Reinforcement Learning?](#-what-is-reinforcement-learning)
+- [What is Deep Q-Learning (DQN)?](#-what-is-deep-q-learning-dqn)
+- [Environment Details](#-environment-details)
+- [Algorithm Architecture](#-algorithm-architecture)
+- [Hyperparameters](#-hyperparameters)
+- [Key Concepts Explained](#-key-concepts-explained)
+- [Technology Stack](#technology-stack)
+- [Reinforcement Learning Framework](#reinforcement-learning-framework)
+- [Mathematical Formulation](#mathematical-formulation)
+- [System Architecture](#system-architecture)
+- [Project Structure](#-project-structure)
+- [High Level Architecture](#high-level-architecture)
+- [Agent Learning Architecture](#agent-learning-architecture)
+- [Training Workflow](#training-workflow)
+- [Training Output](#training-output)
+- [Results](#-results)
 - [Installation](#installation)
-- [Usage](#usage)
-- [Training Process](#training-process)
-- [Results](#results)
-- [Learning Curves](#learning-curves)
-- [Technologies Used](#technologies-used)
-- [Future Improvements](#future-improvements)
+- [Running the Project](#running-the-project)
+- [Expected Results](#expected-results)
+- [Applications](#applications)
 - [Author](#author)
+
 ---
 ## 🎬 Training Progression
 
