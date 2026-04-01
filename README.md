@@ -626,23 +626,16 @@ Although CartPole is a benchmark problem, the underlying techniques apply to rea
 
 ---
 
-# Future Improvements
-
-Potential enhancements include:
-
-* Implementing **Deep Q Networks (DQN)**
-* Using **Policy Gradient algorithms**
-* Actor-Critic architectures
-* Hyperparameter optimization
-* GPU acceleration
-* Real-time visualization dashboards
-
-
-
----
-
 # Author
+ ## 📧 Connect with Me
+**Rutuja Maruti Kumbhar**
 
-Rutuja Kumbhar
+- 🌐 [My Portfolio](https://rutujakumbhar.netlify.app)
+
+- 💼 [My LinkedIn](https://www.linkedin.com/in/rutuja-kumbhar-a7311b2a9/)
+
+- 👨‍💻 [My GitHub](https://github.com/RutujaKumbhar17)
+
+- 📧 [Email Id](https://rutujakumbhar.prof@gmail.com)
 
 
