@@ -46,48 +46,235 @@ The system demonstrates:
 
 ---
 
-# Problem Statement
+## 🧠 What is Reinforcement Learning?
 
-The **CartPole system** consists of:
+**Reinforcement Learning (RL)** is a machine learning paradigm where an **agent** learns to make decisions by interacting with an **environment** through trial and error.
 
-* A cart moving along a horizontal track
-* A pole attached to the cart via a frictionless joint
+```
+       ┌──────────────────────────────────────────┐
+       │                                          │
+  ┌────▼────┐    Action (aₜ)    ┌──────────────┐  │
+  │         │  ───────────────► │              │  │
+  │  Agent  │                   │  Environment │  │
+  │         │  ◄─────────────── │              │  │
+  └─────────┘  State (sₜ₊₁)    └──────────────┘  │
+               Reward (rₜ)                         │
+       │                                          │
+       └──────────────────────────────────────────┘
+                    Closed-loop interaction
+```
 
-The agent must control the cart's movement to keep the pole balanced.
+### Core Concepts
 
-### State Space
+| Term | Definition |
+|---|---|
+| **Agent** | The learning entity (our DQN network) |
+| **Environment** | The world the agent interacts with (CartPole) |
+| **State (s)** | The current observation the agent receives |
+| **Action (a)** | A decision the agent makes (left or right) |
+| **Reward (r)** | Feedback signal (+1 each timestep pole stays up) |
+| **Policy (π)** | The strategy that maps states to actions |
+| **Episode** | One complete run from reset to termination |
 
-The environment provides four state variables:
+The agent's goal: **maximise cumulative reward** over an episode.
 
-| State Variable        | Description                          |
-| --------------------- | ------------------------------------ |
-| Cart Position         | Position of cart on track            |
-| Cart Velocity         | Speed of cart movement               |
-| Pole Angle            | Angle between pole and vertical axis |
-| Pole Angular Velocity | Rate of pole rotation                |
+---
+
+## 🔬 What is Deep Q-Learning (DQN)?
+
+**Q-Learning** is a model-free RL algorithm that learns the optimal *action-value function* **Q(s, a)**, which estimates the expected cumulative reward of taking action `a` in state `s` and following the optimal policy thereafter.
+
+### The Bellman Equation
+
+The optimal Q-function satisfies:
+
+```
+Q*(s, a) = r  +  γ · max_{a'} Q*(s', a')
+```
+
+Where:
+- `r`  = immediate reward
+- `γ`  = discount factor (how much future rewards matter)
+- `s'` = next state after taking action `a`
+
+### Why "Deep"?
+
+In small problems, Q-values can be stored in a table. For CartPole's continuous state space, we use a **neural network** to approximate Q(s, a) for all actions simultaneously — this is **Deep Q-Learning**.
+
+### DQN Innovations (Mnih et al., 2015)
+
+| Innovation | Purpose |
+|---|---|
+| **Neural Network** | Approximate Q(s,a) in continuous state spaces |
+| **Experience Replay** | Store past transitions and sample randomly to break temporal correlations |
+| **Target Network** | Separate, slowly-updated network for stable TD targets |
+| **ε-Greedy Exploration** | Balance exploration (random) and exploitation (greedy) |
+
+### Training Process
+
+```
+For each step:
+  1. Observe state s
+  2. Select action a (ε-greedy)
+  3. Execute a → receive (r, s')
+  4. Store (s, a, r, s', done) in replay buffer
+  5. Sample random mini-batch from buffer
+  6. Compute target:  y = r + γ · max Q_target(s')
+  7. Minimize loss:   L = MSE(Q_online(s,a), y)
+  8. Update Q_online via backpropagation
+  
+Every 10 episodes:
+  Q_target ← Q_online  (hard copy)
+```
+
+---
+
+## 🎮 Environment Details
+
+```
+Environment: CartPole-v1 (Gymnasium)
+
+                    ┃  ◄── Pole (angle θ)
+                    ┃
+         ┌──────────┸──────────┐
+         │       Cart          │ ◄── Position x
+         └─────────────────────┘
+    ──────────────────────────────── Track
+         ◄──  0  ──►
+         Push LEFT   Push RIGHT
+```
+
+### State Space (4 continuous variables)
+
+| Index | Variable | Range |
+|---|---|---|
+| 0 | Cart Position | [-4.8, 4.8] |
+| 1 | Cart Velocity | (-∞, +∞) |
+| 2 | Pole Angle (radians) | [-0.418, 0.418] |
+| 3 | Pole Angular Velocity | (-∞, +∞) |
 
 ### Action Space
 
-Two discrete actions are available:
+| Action | Meaning |
+|---|---|
+| 0 | Push cart **LEFT** |
+| 1 | Push cart **RIGHT** |
 
-| Action | Description            |
-| ------ | ---------------------- |
-| 0      | Push cart to the left  |
-| 1      | Push cart to the right |
+### Reward & Termination
 
-### Reward Function
+- **+1** reward for every timestep the pole stays upright
+- Episode ends if:
+  - Pole angle > ±12°
+  - Cart position > ±2.4 units
+  - 500 timesteps reached (success!)
+- **Solved**: Average reward ≥ 475 over 100 consecutive episodes
 
-The agent receives:
+---
+
+## 🏗️ Algorithm Architecture
+
+### Neural Network (Q-function Approximator)
 
 ```
-Reward = +1 for every timestep the pole remains balanced
+Input Layer     Hidden Layer 1    Hidden Layer 2    Output Layer
+(state_size=4)  (128 neurons)     (128 neurons)     (action_size=2)
+
+   [cart_pos ]         ┌───┐         ┌───┐        [Q(s, LEFT) ]
+   [cart_vel ]  ──►    │ReLU│  ──►   │ReLU│  ──►  [Q(s, RIGHT)]
+   [pole_ang ]  ──►    │    │  ──►   │    │  ──►
+   [pole_vel ]         └───┘         └───┘
+
+   Xavier init    128 neurons    128 neurons    Linear (no activation)
 ```
 
-The episode ends when:
+### DQN Architecture Diagram
 
-* Pole angle exceeds threshold
-* Cart moves out of bounds
-* Maximum steps are reached
+```
+┌──────────────────────────────────────────────────────────────┐
+│                       DQN AGENT                              │
+│                                                              │
+│  ┌─────────────┐        ┌──────────────────────────────┐    │
+│  │ Environment │──state─►    Online Network Q_θ         │    │
+│  │ CartPole-v1 │        │  (FC 4→128→128→2, ReLU)      │    │
+│  └─────────────┘        └──────────────┬─────────────┘    │
+│         ▲                              │ Q-values          │
+│         │ action                       │                    │
+│         │                    ε-greedy  ▼                    │
+│         └────────────────── select_action()                 │
+│                                                              │
+│  ┌─────────────────────────────────────────────────────┐    │
+│  │                  Replay Buffer                       │    │
+│  │           (s, a, r, s', done) × 100K                │    │
+│  └─────────────────────────┬──────────────────────────┘    │
+│                             │ random mini-batch              │
+│                             ▼                                │
+│  ┌────────────────────────────────────────────────────┐     │
+│  │   Target Network Q_θ'  (frozen, updated every 10ep) │    │
+│  │   Computes stable Bellman targets:                   │    │
+│  │   y = r + γ · max_a' Q_θ'(s', a')                   │    │
+│  └────────────────────────────────────────────────────┘     │
+│                             │                                │
+│                             ▼                                │
+│             Loss = MSE(Q_θ(s,a), y)                         │
+│             Optimizer: Adam  →  ∂L/∂θ  →  update θ          │
+│                                                              │
+└──────────────────────────────────────────────────────────────┘
+```
+### Typical Learning Curve
+
+```
+Reward
+ 500 |                                          ****•••****
+ 475 |─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ [SOLVED]─ ─ ─
+ 400 |                              ****
+ 300 |                        ****
+ 200 |                  ***
+ 100 |          **
+  50 |  *
+     └────────────────────────────────────────────────────
+     0        200       400       600       800      1000
+                          Episode
+```
+
+---
+
+## ⚙️ Hyperparameters
+
+All hyperparameters are configured at the top of `training/train.py`:
+
+| Parameter | Value | Description |
+|---|---|---|
+| `total_episodes` | 1000 | Maximum training episodes |
+| `learning_rate` | 0.001 | Adam optimizer learning rate |
+| `gamma` | 0.99 | Discount factor for future rewards |
+| `epsilon_start` | 1.0 | Initial exploration probability |
+| `epsilon_min` | 0.01 | Minimum exploration probability |
+| `epsilon_decay` | 0.995 | Per-episode multiplicative decay |
+| `buffer_size` | 100,000 | Maximum replay buffer capacity |
+| `batch_size` | 64 | Mini-batch size per training step |
+| `target_update_ep` | 10 | Hard target network update interval |
+| `hidden_size` | 128 | Neurons per hidden layer |
+| `video_interval` | 100 | Record video every N episodes |
+
+---
+
+## 📚 Key Concepts Explained
+
+### Experience Replay
+
+Without replay, consecutive experiences are highly correlated (each state follows the previous). Training on correlated data leads to unstable Q-value updates. The replay buffer stores 100,000 transitions and samples **random mini-batches**, breaking temporal correlations.
+
+### Target Network
+
+Using the same network to compute both predictions and targets causes a moving target problem — the Q-values chase themselves. The **target network** is a frozen copy of the online network, updated every 10 episodes. This provides stable Bellman targets.
+
+### ε-Greedy Exploration
+
+At the start, the agent knows nothing — it explores randomly (ε=1.0). As it learns, ε decays exponentially, shifting toward exploitation of the learned Q-function, with a floor at ε=0.01 for minor continued exploration.
+
+### Gradient Clipping
+
+Applied with `max_norm=1.0` to prevent exploding gradients — a common issue in early training when Q-values are not yet calibrated.
 
 ---
 
@@ -160,7 +347,8 @@ The system consists of several interacting components:
 
 ---
 
-## 📁 Project Structure
+
+# 📁 Project Structure
 
 ```
 CartPole-DQN-Project/
@@ -200,8 +388,7 @@ CartPole-DQN-Project/
 ├── requirements.txt
 └── README.md
 ```
-
-```
+---
 # High Level Architecture
 
 ```mermaid
@@ -306,6 +493,41 @@ The training dashboard provides a consolidated view of all key metrics, includin
 | **Loss Curve** |  | Displays the Mean Squared Error (MSE) loss of the neural network during training. |
 
 -----
+## Expected Terminal Output (Training)
+
+```
+============================================================
+   DQN CartPole-v1 – Training
+============================================================
+[DQNAgent] Using device: cpu
+[Logger] Logging to: results/logs/training_log.csv
+
+Training:  15%|████▌         | 150/1000 [02:31, reward=73, avg100=65.3, epsilon=0.473]
+
+[Episode 200] Recording video ...
+[VideoRecorder] Saved: results/videos/episode_0200.mp4  (143 frames)
+
+✓ Environment SOLVED at episode 487! Avg reward = 477.2 (elapsed: 412.3s)
+
+[Plots] Generating plots in 'results/plots' ...
+[Plot] Saved: results/plots/01_reward_curve.png
+[Plot] Saved: results/plots/02_average_reward.png
+[Plot] Saved: results/plots/03_epsilon_decay.png
+[Plot] Saved: results/plots/04_loss_curve.png
+[Plot] Saved: results/plots/00_training_dashboard.png
+
+============================================================
+          TRAINING COMPLETE
+============================================================
+  Total Episodes       : 487
+  Best Episode Reward  : 500.0
+  Final Avg Reward     : 477.2
+  Total Training Time  : 0:06:52
+  Log saved to         : results/logs/training_log.csv
+============================================================
+```
+
+---
 
 ## 📊 Results
 
