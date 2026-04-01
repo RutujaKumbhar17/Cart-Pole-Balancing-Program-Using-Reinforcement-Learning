@@ -23,20 +23,19 @@ Understood. I have updated the **Table of Contents** using internal **Anchor Lin
 \</div\>
 
 
-## 📍 Table of Contents
+## 📑 Table of Contents
 
-  * [🎬 Training Progression](https://www.google.com/search?q=%23training-progression)
-  * [📖 Overview](https://www.google.com/search?q=%23overview)
-  * [🧠 What is Reinforcement Learning?](https://www.google.com/search?q=%23what-is-rl)
-  * [🔬 What is Deep Q-Learning (DQN)?](https://www.google.com/search?q=%23what-is-dqn)
-  * [🎮 Environment Details](https://www.google.com/search?q=%23env-details)
-  * [🏗️ Algorithm Architecture](https://www.google.com/search?q=%23algo-arch)
-  * [⚙️ Hyperparameters](https://www.google.com/search?q=%23hyperparameters)
-  * [🛠️ Technology Stack](https://www.google.com/search?q=%23tech-stack)
-  * [📁 Project Structure](https://www.google.com/search?q=%23project-structure)
-  * [📈 Training Output & Results](https://www.google.com/search?q=%23training-output)
-  * [🚀 Installation & Running](https://www.google.com/search?q=%23installation)
-  * [📧 Author & Connect](https://www.google.com/search?q=%23author)
+- [Project Overview](#project-overview)
+- [Features](#features)
+- [Project Structure](#project-structure)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Training Process](#training-process)
+- [Results](#results)
+- [Learning Curves](#learning-curves)
+- [Technologies Used](#technologies-used)
+- [Future Improvements](#future-improvements)
+- [Author](#author)
 ---
 ## 🎬 Training Progression
 
