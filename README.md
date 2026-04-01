@@ -159,7 +159,33 @@ The system consists of several interacting components:
 6. Visualization System
 
 ---
+# Project Architecture
+```
 
+CartPole-DQN-Project/
+├── agent/
+│   └── dqn_agent.py             # DQN agent logic (action selection, learning, memory)
+├── env/
+│   └── cartpole_env.py          # Gymnasium environment wrapper
+├── evaluation/
+│   └── evaluate.py              # Script to run greedy evaluation episodes
+├── models/
+│   └── dqn_network.py           # PyTorch MLP architecture
+├── results/                     # Auto-generated during training
+│   ├── logs/                    # training_log.csv
+│   ├── plots/                   # Reward curves, loss graphs, dashboards
+│   └── videos/                  # MP4 recordings of episodes
+├── training/
+│   └── train.py                 # Main execution script
+├── utils/
+│   ├── logger.py                # CSV metric logger
+│   ├── plotting.py              # Matplotlib visualizations
+│   ├── replay_buffer.py         # Experience replay implementation
+│   └── video_recorder.py        # OpenCV video generator
+├── requirements.txt
+└── README.md
+
+```
 # High Level Architecture
 
 ```mermaid
