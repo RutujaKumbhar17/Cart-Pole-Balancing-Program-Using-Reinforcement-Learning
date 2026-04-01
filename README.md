@@ -272,6 +272,24 @@ J --> K[Next Episode]
 
 ---
 
+# Training Output
+
+During training, the system generates comprehensive performance metrics and visualizations to track the agent's learning progress. These plots are automatically saved in the `results/plots/` directory.
+
+### 📊 Training Dashboard
+
+The training dashboard provides a consolidated view of all key metrics, including reward trends and loss convergence.
+
+### 📈 Detailed Performance Metrics
+
+| Metric | Visualization | Description |
+| :--- | :---: | :--- |
+| **Reward Curve** |  | Shows the total reward achieved in each episode. |
+| **Average Reward** |  | A smoothed curve showing the rolling average of rewards to indicate stability. |
+| **Epsilon Decay** |  | Tracks the transition from exploration to exploitation over time. |
+| **Loss Curve** |  | Displays the Mean Squared Error (MSE) loss of the neural network during training. |
+
+-----
 
 # Installation
 
