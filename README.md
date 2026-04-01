@@ -14,8 +14,6 @@ Understood. I have updated the **Table of Contents** using internal **Anchor Lin
 
 -----
 
-
-## 📑 Table of Contents
 ## 📑 Table of Contents
 
 - [Overview](#overview)
