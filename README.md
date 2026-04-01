@@ -159,31 +159,47 @@ The system consists of several interacting components:
 6. Visualization System
 
 ---
-# Project Architecture
-```
 
+## 📁 Project Structure
+
+```
 CartPole-DQN-Project/
-├── agent/
-│   └── dqn_agent.py             # DQN agent logic (action selection, learning, memory)
+│
 ├── env/
-│   └── cartpole_env.py          # Gymnasium environment wrapper
-├── evaluation/
-│   └── evaluate.py              # Script to run greedy evaluation episodes
+│   ├── __init__.py
+│   └── cartpole_env.py          # Gymnasium CartPole-v1 wrapper
+│
+├── agent/
+│   ├── __init__.py
+│   └── dqn_agent.py             # DQN agent (action selection, learning, saving)
+│
 ├── models/
-│   └── dqn_network.py           # PyTorch MLP architecture
-├── results/                     # Auto-generated during training
-│   ├── logs/                    # training_log.csv
-│   ├── plots/                   # Reward curves, loss graphs, dashboards
-│   └── videos/                  # MP4 recordings of episodes
-├── training/
-│   └── train.py                 # Main execution script
+│   ├── __init__.py
+│   └── dqn_network.py           # PyTorch neural network (4→128→128→2)
+│
 ├── utils/
-│   ├── logger.py                # CSV metric logger
-│   ├── plotting.py              # Matplotlib visualizations
-│   ├── replay_buffer.py         # Experience replay implementation
-│   └── video_recorder.py        # OpenCV video generator
+│   ├── __init__.py
+│   ├── replay_buffer.py         # Experience replay buffer
+│   ├── plotting.py              # Matplotlib training plots (dark theme)
+│   ├── video_recorder.py        # OpenCV episode video recorder
+│   └── logger.py                # CSV training metrics logger
+│
+├── training/
+│   ├── __init__.py
+│   └── train.py                 # ← Main training script
+│
+├── evaluation/
+│   ├── __init__.py
+│   └── evaluate.py              # Evaluation script (greedy policy)
+│
+├── results/
+│   ├── videos/                  # episode_0100.mp4, episode_0200.mp4, ...
+│   ├── plots/                   # 01_reward_curve.png, 02_average_reward.png, ...
+│   └── logs/                    # training_log.csv
+│
 ├── requirements.txt
 └── README.md
+```
 
 ```
 # High Level Architecture
@@ -290,6 +306,27 @@ The training dashboard provides a consolidated view of all key metrics, includin
 | **Loss Curve** |  | Displays the Mean Squared Error (MSE) loss of the neural network during training. |
 
 -----
+
+## 📊 Results
+
+### 📈 Training Performance
+
+After training, the following diagnostic plots are generated to visualize the agent's learning process.
+
+#### 🏗️ Training Dashboard
+![Training Dashboard](results/plots/00_training_dashboard.png)
+
+#### 🔬 Key Metrics Breakdown
+
+| 🏆 Reward Curve | 📉 Loss Curve |
+|:---:|:---:|
+| ![Reward Curve](results/plots/01_reward_curve.png) | ![Loss Curve](results/plots/04_loss_curve.png) |
+
+| 🎯 Average Reward (Rolling 100) | 🕯️ Epsilon Decay |
+|:---:|:---:|
+| ![Average Reward](results/plots/02_average_reward.png) | ![Epsilon Decay](results/plots/03_epsilon_decay.png) |
+
+---
 
 # Installation
 
