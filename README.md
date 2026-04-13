@@ -1,7 +1,6 @@
 # 🤖 Cart Pole Balancing using Reinforcement Learning
-
 <div align="center">
-
+       
 ![Python](https://img.shields.io/badge/Python-3.10%2B-3776AB?style=for-the-badge&logo=python&logoColor=white)
 ![PyTorch](https://img.shields.io/badge/PyTorch-2.0%2B-EE4C2C?style=for-the-badge&logo=pytorch&logoColor=white)
 ![Gymnasium](https://img.shields.io/badge/Gymnasium-0.29%2B-0081FB?style=for-the-badge)
@@ -9,8 +8,10 @@
 
 *A production-quality Deep Reinforcement Learning project that trains an intelligent agent to balance a pole on a moving cart — solving CartPole-v1 from scratch.*
 
+
 </div>
 Understood. I have updated the **Table of Contents** using internal **Anchor Links**. Now, when you click a link in the list, it will jump directly to the corresponding section within the README rather than opening an external search.
+
 
 -----
 
